@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package mimo.srv.room;
+
+service Room {
+    rpc Join (Request) returns (Response) {
+    }
+
+    rpc Leave (Request) returns (Response) {
+    }
+
+    rpc Member (Request) returns (RespMember) {
+    }
+}
+
+
+message Request {
+    string mid = 1;
+    string uid = 2;
+}
+
+message Response {
+    string status = 1;
+}
+
+message RespMember {
+    string status = 1;
+    repeated string member = 2;
+}

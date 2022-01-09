@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package mimo.srv.message;
+
+service SendMessage {
+    rpc Send (Request) returns (Response) {
+    }
+}
+
+message Request {
+    string id = 1;
+
+    string srcId = 2;
+    string dstId = 3;
+
+    string msgType = 4;
+    string content = 5;
+
+    string resType = 6;
+    string resUrl = 7;
+
+    int64 createTime = 8;
+}
+
+message Response {
+    string status = 1;
+}

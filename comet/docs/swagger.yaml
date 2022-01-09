@@ -1,0 +1,196 @@
+definitions:
+  swagger.Message:
+    properties:
+      content:
+        type: string
+      dstId:
+        type: string
+      msgType:
+        type: integer
+      resType:
+        type: integer
+      resUrl:
+        type: string
+      srcId:
+        type: string
+    type: object
+  swagger.Response:
+    properties:
+      code:
+        type: integer
+      msg:
+        type: string
+      result:
+        type: object
+    type: object
+info:
+  contact: {}
+  description: IM服务
+  license: {}
+  title: Gmimo Server
+  version: "0.1"
+paths:
+  /:
+    get:
+      responses:
+        "200": {}
+      summary: 首页
+      tags:
+      - Home
+  /auth:
+    get:
+      parameters:
+      - description: 用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        required: true
+        type: string
+      responses:
+        "200": {}
+      summary: 生成Token
+      tags:
+      - 认证
+  /hello:
+    get:
+      parameters:
+      - description: 名字
+        in: query
+        name: name
+        required: true
+        type: string
+      responses:
+        "200": {}
+      summary: hello rpc
+      tags:
+      - Home
+  /message/send:
+    post:
+      consumes:
+      - application/json
+      description: '<li>1. id: 消息唯一ID</li><li><b>2. srcId: 发送该消息的ID</b></li><li>3.
+        dstId: 接收消息的ID</li><li><b>4. msgType: 消息类型(1聊天室 2单聊 3群聊 4广播 5组播)</b></li><li>5.
+        content: 消息内容</li><li>6. resType: 资源类型(1图片 2声音 3视频)</li><li>6. resUrl: 资源URL</li><li>7.
+        CreateTime: 消息创建时间</li><li>8. ReadTime: 读消息时间</li>'
+      parameters:
+      - description: 消息体
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/swagger.Message'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.Response'
+      summary: 发送消息
+      tags:
+      - 消息
+  /room/join:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 房间ID
+        in: query
+        name: mid
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: uid
+        required: true
+        type: string
+      responses:
+        "200": {}
+      summary: 用户加入房间
+      tags:
+      - 房间管理
+  /room/leave:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 房间ID
+        in: query
+        name: mid
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: uid
+        required: true
+        type: string
+      responses:
+        "200": {}
+      summary: 用户离开房间
+      tags:
+      - 房间管理
+  /room/member/{mid}:
+    get:
+      parameters:
+      - description: Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 房间ID
+        in: path
+        name: mid
+        required: true
+        type: string
+      responses:
+        "200": {}
+      summary: 该房间用户列表
+      tags:
+      - 房间管理
+  /ws/close:
+    get:
+      parameters:
+      - description: 用户ID
+        in: query
+        name: uid
+        required: true
+        type: string
+      responses:
+        "200": {}
+      summary: 关闭websocket连接
+      tags:
+      - websocket
+  /ws/connect:
+    get:
+      parameters:
+      - description: 用户ID
+        in: query
+        name: uid
+        required: true
+        type: string
+      - description: 房间ID
+        in: query
+        name: mid
+        required: true
+        type: string
+      responses:
+        "200": {}
+      summary: 发起websocket连接
+      tags:
+      - websocket
+  /ws/list:
+    get:
+      responses:
+        "200": {}
+      summary: 列出websocket连接用户
+      tags:
+      - websocket
+swagger: "2.0"
